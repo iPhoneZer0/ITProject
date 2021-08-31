@@ -14,9 +14,9 @@ unset($_SESSION['send']);
    
 $sql =("SELECT * FROM mail WHERE receiver ='" . $_SESSION['auth']['name'] . "'");
 
-// SQL実行
-$res = $dbh->query($sql);
-//queryのためexecuteは要らない  $res->execute();
+// SQL実行  queryの場合はexecuteは要らない  
+$res = $dbh->prepare($sql);
+$res->execute();
 
 //配列の取得
 $result = $res->fetchAll();
@@ -58,7 +58,7 @@ $result = $res->fetchAll();
 ?>
 </table>
 
-<h3>メッセージの作成する&raquo;<a href="send.php">こちら</a></h3>
+<h3>メッセージを作成する&raquo;<a href="send.php">こちら</a></h3>
 
 <h3>メッセージの送信履歴を確認する</h3>
 <table border="1">
@@ -71,7 +71,7 @@ $result = $res->fetchAll();
     $sql =("SELECT * FROM mail WHERE sender ='" . $_SESSION['auth']['name'] . "'");
 
 	// SQL実行
-	$res = $dbh->query($sql);
+	$res = $dbh->prepare($sql);
     $res->execute();
 
     //配列の取得

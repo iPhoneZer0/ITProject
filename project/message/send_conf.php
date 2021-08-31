@@ -19,7 +19,7 @@ $_SESSION['send']['message'] = $_POST["message"];
 
 $sql =("SELECT * FROM user WHERE name  ='" . $_SESSION['send']['name'] . "'");
 // SQL実行
-$res = $dbh->query($sql);
+$res = $dbh->prepare($sql);
 $res->execute();
 
 //配列の取得
