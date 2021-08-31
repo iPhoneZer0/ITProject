@@ -11,20 +11,25 @@ ob_start();
 
 require('../pdo.php');
 
-//$name = $_POST["name"];
-//$message = $_POST["message"];
+$_SESSION['send']['name'] = strval($_POST["name"] ?? '');
+$_SESSION['send']['message'] = strval($_POST["message"] ?? '');
 
-$_SESSION['send']['name'] = $_POST["name"];
-$_SESSION['send']['message'] = $_POST["message"];
-
-$sql =("SELECT * FROM user WHERE name  ='" . $_SESSION['send']['name'] . "'");
-// SQL実行
+$sql =("SELECT * FROM user WHERE name = :name");
 $res = $dbh->prepare($sql);
+
+$res->bindValue(':name', $_SESSION['send']['name']);
+
 $res->execute();
+//SQL失敗
+if (false === $res) {
+    echo "DBミス？";
+    exit;
+}
 
 //配列の取得
 $result = $res->fetchAll();
 
+//前のページに宛名の該当があるかチェックするので、ここに処理を置いています
 if($result == false){
     $_SESSION['send']['name_miss'] = true;
     header("location: send.php");
@@ -46,10 +51,10 @@ if($_SESSION['send']['message'] == null){
 <h2>メール確認フォーム&raquo;
 <a href="send.php">#</a></h2>
 
-<input id="i_event" type="text" name="event" value=<?php echo $_SESSION['send']['name']?> readonly><br>
+<input id="i_event" type="text" name="event" value=<?php echo htmlspecialchars($_SESSION['send']['name'])?> readonly><br>
 
 <textarea name="message" cols="30" rows="5" readonly><?php
-echo  $_SESSION['send']['message'] ?></textarea><br>
+echo  htmlspecialchars($_SESSION['send']['message'] )?></textarea><br>
 
 <button onclick="location.href='send.php'">編集画面に戻る</button>
 
