@@ -2,7 +2,7 @@
 
 try {
     //
-    $dsn = "mysql:dbname=kotaka;host=localhost;charset=utf8mb4";
+    $dsn = "mysql:dbname=DB名;host=localhost;charset=utf8mb4";
     $option = [
         // 静的プレースホルダを指定
         PDO::ATTR_EMULATE_PREPARES => false,
@@ -11,7 +11,7 @@ try {
     ];
     //
     //
-    $dbh = new PDO($dsn, 'kotaka', 'pakotakass', $option);
+    $dbh = new PDO($dsn, 'ユーザー名', 'パスワード', $option);
 } catch (PDOException $e) {
     // 
     echo $e->getMessage();
